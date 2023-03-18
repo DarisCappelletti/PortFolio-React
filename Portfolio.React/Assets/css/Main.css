@@ -1,0 +1,24 @@
+﻿body {
+    padding-top: 80px;
+    padding-bottom: 20px;
+}
+
+* {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.w100 {
+    font-weight: 100;
+}
+
+.w200 {
+    font-weight: 200;
+}
+
+.w300 {
+    font-weight: 300;
+}
+
+.w400 {
+    font-weight: 400;
+}

@@ -1,0 +1,17 @@
+﻿@model PortFolio.Core.DAL.ViewModels.Alert
+@{ 
+    var tipo = Model.Tipo.ToString() == "Successo"
+        ? "alert-success"
+        : Model.Tipo.ToString() == "Errore" 
+        ? "alert-error" 
+        : Model.Tipo.ToString() == "Attenzione" 
+        ? "alert-warning" 
+        : "alert-info";
+}
+<div class="messagealert" id="alert_container">
+    <div id="alert_div" class="alert @tipo alert-dismissible fade show">
+        <strong>@Model.Intestazione</strong>
+        <span>@Html.Raw(Model.Messaggio)</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+</div>

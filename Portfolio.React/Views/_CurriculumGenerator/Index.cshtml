@@ -1,0 +1,423 @@
+﻿@model PortFolio.Core.DAL.ViewModels.Curriculum1
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .img-wrap {
+        position: relative;
+        display: inline-block;
+        font-size: 0;
+    }
+
+        .img-wrap .close {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            z-index: 100;
+            background-color: #FFF;
+            padding: 5px 2px 2px;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+            opacity: .2;
+            text-align: center;
+            font-size: 22px;
+            line-height: 10px;
+            border-radius: 50%;
+        }
+</style>
+<div class="container">
+    <div>
+        <h1>Generatore curriculum</h1>
+        <h2>Tool per la generazione automatica di un curriculum con un template preimpostato.</h2>
+        <p>
+            Il tool permette di creare un curriculum partendo da un template predefinito andando a restituire all'utente un file compresso .zip dove saranno inseriti due file generati
+            uno in formato ".pdf" (il curriculum) uno in formato ".xml".
+            Il file ".xml" contiene tutte le informazioni inserite dall'utente in modo da poter generare velocemente un nuovo curriculum andando a caricare le vecchie informazioni dal file.
+        </p>
+        <p></p>
+    </div>
+
+
+    <div class="row mb-5">
+        <div class="col-md-6">
+            <label>Recupera le informazioni da un vecchio file xml (creato su questa pagina)</label>
+            @using (Html.BeginForm("LeggiDatiDaXmlFile", "_CurriculumGenerator", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+            <div style="display: flex;">
+                <input type="file" id="fileRecuperaCV" name="FileRecuperaCV" class="form-control" style="width: 80%;" />
+                <input type="submit" id="btnLettiFileXml" class="btn btn-primary float-end" value="Carica xml" Style="width: 19%;" />
+            </div>
+            }
+        </div>
+    </div>
+
+    @using (Html.BeginForm("Post", "_CurriculumGenerator", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+    <div>
+        <label class="w-100">Carica un'immagine da impostare sul profilo</label>
+        <input type="file" id="fileImmagine" name="imgBase64" accept="image/*" class="form-control" />
+        <input type="hidden" id="hidImmagineProfilo" name="hidImgBase64" value="@(Model != null && Model.hidImgBase64 != null ? Model.hidImgBase64 : "")" />
+
+        <div id="divImmagineProfilo" class="img-wrap">
+            <span id="rimuoviImmagineProfilo" class="close">&times;</span>
+            <img id="immagineProfilo" alt="immagine profilo" width="64" />
+        </div>
+    </div>
+    <p>Inserisci le tue informazioni</p>
+    <div class="accordion mb-3" id="accordionFormCurriculum">
+        <!-- Anagrafica -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headAnagrafica">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#divAnagrafica" aria-expanded="true" aria-controls="divAnagrafica">
+                    Anagrafica
+                </button>
+            </h2>
+            <div id="divAnagrafica" class="accordion-collapse collapse show" aria-labelledby="headAnagrafica" data-bs-parent="#accordionFormCurriculum">
+                <div class="accordion-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div>
+                                <label for="txtNome" class="form-label">Nome</label>
+                                <input type="text"
+                                       id="txtNome" name="anagrafica.Nome"
+                                       class="form-control"
+                                       value="@(Model != null && Model.anagrafica != null ? Model.anagrafica.Nome : "")" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="txtCognome" class="form-label">Cognome</label>
+                            <input type="text" id="txtCognome" name="anagrafica.Cognome" class="form-control"
+                                   value="@(Model != null && Model.anagrafica != null ? Model.anagrafica.Cognome : "")" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="txtEta" class="form-label">Età</label>
+                            <input type="text" id="txtEta" name="anagrafica.Eta" class="form-control"
+                                   value="@(Model != null && Model.anagrafica != null ? Model.anagrafica.Eta : "")" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="txtNazionalita" class="form-label">Nazionalità</label>
+                            <input type="text" id="txtNazionalita" name="anagrafica.Nazionalita" class="form-control"
+                                   value="@(Model != null && Model.anagrafica != null ? Model.anagrafica.Nazionalita : "")" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="txtLingue" class="form-label">Lingue</label>
+                            <input type="text" id="txtLingue" name="anagrafica.Lingua" class="form-control"
+                                   value="@(Model != null && Model.anagrafica != null ? Model.anagrafica.Lingua : "")" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Contatti -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headContatti">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#divContatti" aria-expanded="false" aria-controls="divContatti">
+                    Contatti
+                </button>
+            </h2>
+            <div id="divContatti" class="accordion-collapse collapse" aria-labelledby="headContatti" data-bs-parent="#accordionFormCurriculum">
+                <div class="accordion-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div>
+                                <label for="txtTelefono" class="form-label">Telefono</label>
+                                <input type="text" id="txtTelefono" name="contatti.Telefono" class="form-control"
+                                       value="@(Model != null && Model.contatti != null ? Model.contatti.Telefono : "")" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div>
+                                <label for="txtEmail" class="form-label">Email</label>
+                                <input type="text" id="txtEmail" name="contatti.Email" class="form-control"
+                                       value="@(Model != null && Model.contatti != null ? Model.contatti.Email : "")" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div>
+                                <label for="txtIndirizzo" class="form-label">Indirizzo</label>
+                                <input type="text" id="txtIndirizzo" name="contatti.Indirizzo" class="form-control"
+                                       value="@(Model != null && Model.contatti != null ? Model.contatti.Indirizzo : "")" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div>
+                                <label for="txtSitoWeb" class="form-label">Sito web</label>
+                                <input type="text" id="txtSitoWeb" name="contatti.SitoWeb" class="form-control"
+                                       value="@(Model != null && Model.contatti != null ? Model.contatti.SitoWeb : "")" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Percorso di studi -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headPercorsoDiStudi">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#divPercorsoDiStudi" aria-expanded="false" aria-controls="divPercorsoDiStudi">
+                    Percorso di studi
+                </button>
+            </h2>
+            <div id="divPercorsoDiStudi" class="accordion-collapse collapse" aria-labelledby="headPercorsoDiStudi" data-bs-parent="#accordionFormCurriculum">
+                <div class="accordion-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div>
+                                <label for="txtPercorso1" class="form-label">Titolo di studio</label>
+                                <input type="text" id="txtPercorso1" name="percorsoDiStudi.Percorso1" class="form-control"
+                                       value="@(Model != null && Model.percorsoDiStudi != null ? Model.percorsoDiStudi.Percorso1 : "")" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div>
+                                <label for="txtPercorsoLuogo1" class="form-label">Luogo</label>
+                                <input type="text" id="txtPercorsoLuogo1" name="percorsoDiStudi.PercorsoLuogo1" class="form-control"
+                                       value="@(Model != null && Model.percorsoDiStudi != null ? Model.percorsoDiStudi.PercorsoLuogo1 : "")" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div>
+                                <label for="txtPercorso2" class="form-label">Titolo di studio</label>
+                                <input type="text" id="txtPercorso2" name="percorsoDiStudi.Percorso2" class="form-control"
+                                       value="@(Model != null && Model.percorsoDiStudi != null ? Model.percorsoDiStudi.Percorso2 : "")" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div>
+                                <label for="txtPercorsoLuogo2" class="form-label">Luogo</label>
+                                <input type="text" id="txtPercorsoLuogo2" name="percorsoDiStudi.PercorsoLuogo2" class="form-control"
+                                       value="@(Model != null && Model.percorsoDiStudi != null ? Model.percorsoDiStudi.PercorsoLuogo2 : "")" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Skills -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headSkills">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#divSkills" aria-expanded="false" aria-controls="divSkills">
+                    Skills
+                </button>
+            </h2>
+            <div id="divSkills" class="accordion-collapse collapse" aria-labelledby="headSkills" data-bs-parent="#accordionFormCurriculum">
+                <div class="accordion-body">
+                    <div>
+                        <label for="txtSkills" class="form-label">Skills</label>
+                        <input type="text" id="txtSkills" name="skills" class="form-control"
+                               value="@(Model != null && Model.skills != null ? Model.skills : "")" />
+                        <p style="font-style:italic;">Separare ogni skill con la virgola "," come ad esempio "C#,Javascript,Jquery".</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Profilo -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headProfilo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#divProfilo" aria-expanded="false" aria-controls="divProfilo">
+                    Profilo
+                </button>
+            </h2>
+            <div id="divProfilo" class="accordion-collapse collapse" aria-labelledby="headProfilo" data-bs-parent="#accordionFormCurriculum">
+                <div class="accordion-body">
+                    <div>
+                        <label for="txtProfilo" class="form-label">Profilo</label>
+                        <input type="text" id="txtProfilo" name="profilo" class="form-control"
+                               value="@(Model != null && Model.profilo != null ? Model.profilo : "")" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Esperienza lavorativa -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headEsperienzaLavorativa">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#divEsperienzaLavorativa" aria-expanded="false" aria-controls="divEsperienzaLavorativa">
+                    Esperienza lavorativa
+                </button>
+            </h2>
+            <div id="divEsperienzaLavorativa" class="accordion-collapse collapse" aria-labelledby="headEsperienzaLavorativa" data-bs-parent="#accordionFormCurriculum">
+                <div class="accordion-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div>
+                                <label for="txtProfessione" class="form-label">Professione</label>
+                                <input type="text" id="txtProfessione" name="esperienzaLavorativa.Professione" class="form-control"
+                                       value="@(Model != null && Model.esperienzaLavorativa != null ? Model.esperienzaLavorativa.Professione : "")" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div>
+                                <label for="txtAzienda" class="form-label">Azienda</label>
+                                <input type="text" id="txtAzienda" name="esperienzaLavorativa.Azienda" class="form-control"
+                                       value="@(Model != null && Model.esperienzaLavorativa != null ? Model.esperienzaLavorativa.Azienda : "")" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div>
+                                <label for="txtDataInizio" class="form-label">Data inizio</label>
+                                <input type="text" id="txtDataInizio" name="esperienzaLavorativa.DataInizio" class="form-control"
+                                       value="@(Model != null && Model.esperienzaLavorativa != null ? Model.esperienzaLavorativa.DataInizio : "")" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div>
+                                <label for="txtDataFine" class="form-label">Data fine</label>
+                                <input type="text" id="txtDataFine" name="esperienzaLavorativa.DataFine" class="form-control"
+                                       value="@(Model != null && Model.esperienzaLavorativa != null ? Model.esperienzaLavorativa.DataFine : "")" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div>
+                                <label for="txtDescrizione" class="form-label">Descrizione</label>
+                                <input type="text" id="txtDescrizione" name="esperienzaLavorativa.Descrizione" class="form-control"
+                                       value="@(Model != null && Model.esperienzaLavorativa != null ? Model.esperienzaLavorativa.Descrizione : "")" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Progetti personali -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headProgettiPersonali">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#divProgettiPersonali" aria-expanded="false" aria-controls="divProgettiPersonali">
+                    Progetti personali
+                </button>
+            </h2>
+            <div id="divProgettiPersonali" class="accordion-collapse collapse" aria-labelledby="headProgettiPersonali" data-bs-parent="#accordionFormCurriculum">
+                <div class="accordion-body">
+                    <div id="templateHtml" class="row">
+                        <!-- 1 -->
+                        <div class="col-md-6">
+                            <div>
+                                <label for="txtProgetto1" class="form-label">Progetto</label>
+                                <input type="text" id="txtProgetto1" name="progettiPersonali[0].Progetto" class="form-control"
+                                       value="@(Model != null && Model.progettiPersonali[0] != null ? Model.progettiPersonali[0].Progetto : "")" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div>
+                                <label for="txtProgettoLinguaggio1" class="form-label">Linguaggio</label>
+                                <input type="text" id="txtProgettoLinguaggio1" name="progettiPersonali[0].Linguaggio" class="form-control"
+                                       value="@(Model != null && Model.progettiPersonali[0] != null ? Model.progettiPersonali[0].Linguaggio : "")" />
+                            </div>
+                        </div>
+
+                        <!-- 2 -->
+                        <div class="col-md-6">
+                            <div>
+                                <label for="txtProgetto2" class="form-label">Progetto</label>
+                                <input type="text" id="txtProgetto2" name="progettiPersonali[1].Progetto" class="form-control"
+                                       value="@(Model != null && Model.progettiPersonali[1] != null ? Model.progettiPersonali[1].Progetto : "")" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div>
+                                <label for="txtProgettoLinguaggio2" class="form-label">Linguaggio</label>
+                                <input type="text" id="txtProgettoLinguaggio2" name="progettiPersonali[1].Linguaggio" class="form-control"
+                                       value="@(Model != null && Model.progettiPersonali[1] != null ? Model.progettiPersonali[1].Linguaggio : "")" />
+                            </div>
+                        </div>
+                        <!-- 3 -->
+                        <div class="col-md-6">
+                            <div>
+                                <label for="txtProgetto3" class="form-label">Progetto</label>
+                                <input type="text" id="txtProgetto3" name="progettiPersonali[2].Progetto" class="form-control"
+                                       value="@(Model != null && Model.progettiPersonali[2] != null ? Model.progettiPersonali[2].Progetto : "")" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div>
+                                <label for="txtProgettoLinguaggio3" class="form-label">Linguaggio</label>
+                                <input type="text" id="txtProgettoLinguaggio3" name="progettiPersonali[2].Linguaggio" class="form-control"
+                                       value="@(Model != null && Model.progettiPersonali[2] != null ? Model.progettiPersonali[2].Linguaggio : "")" />
+                            </div>
+                        </div>
+                        <!-- 4 -->
+                        <div class="col-md-6">
+                            <div>
+                                <label for="txtProgetto4" class="form-label">Progetto</label>
+                                <input type="text" id="txtProgetto4" name="progettiPersonali[3].Progetto" class="form-control"
+                                       value="@(Model != null && Model.progettiPersonali[3] != null ? Model.progettiPersonali[3].Progetto : "")" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div>
+                                <label for="txtProgettoLinguaggio4" class="form-label">Linguaggio</label>
+                                <input type="text" id="txtProgettoLinguaggio4" name="progettiPersonali[3].Linguaggio" class="form-control"
+                                       value="@(Model != null && Model.progettiPersonali[3] != null ? Model.progettiPersonali[3].Linguaggio : "")" />
+                            </div>
+                        </div>
+                        <!-- 5 -->
+                        <div class="col-md-6">
+                            <div>
+                                <label for="txtProgetto5" class="form-label">Progetto</label>
+                                <input type="text" id="txtProgetto5" name="progettiPersonali[4].Progetto" class="form-control"
+                                       value="@(Model != null && Model.progettiPersonali[4] != null ? Model.progettiPersonali[4].Progetto : "")" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div>
+                                <label for="txtProgettoLinguaggio5" class="form-label">Linguaggio</label>
+                                <input type="text" id="txtProgettoLinguaggio5" name="progettiPersonali[4].Linguaggio" class="form-control"
+                                       value="@(Model != null && Model.progettiPersonali[4] != null ? Model.progettiPersonali[4].Linguaggio : "")" />
+                            </div>
+                        </div>
+                        <!-- 6 -->
+                        <div class="col-md-6">
+                            <div>
+                                <label for="txtProgetto6" class="form-label">Progetto</label>
+                                <input type="text" id="txtProgetto6" name="progettiPersonali[5].Progetto" class="form-control"
+                                       value="@(Model != null && Model.progettiPersonali[5] != null ? Model.progettiPersonali[5].Progetto : "")" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div>
+                                <label for="txtProgettoLinguaggio6" class="form-label">Linguaggio</label>
+                                <input type="text" id="txtProgettoLinguaggio6" name="progettiPersonali[5].Linguaggio" class="form-control"
+                                       value="@(Model != null && Model.progettiPersonali[5] != null ? Model.progettiPersonali[5].Linguaggio : "")" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="submit" id="btnCreaCurriculum" class="btn btn-primary" value="Crea curriculum" />
+    }
+</div>
+
+<script>
+    fileImmagine.onchange = evt => {
+        const [file] = fileImmagine.files
+        if (file) {
+            divImmagineProfilo.show
+            immagineProfilo.src = URL.createObjectURL(file)
+        }
+    }
+
+    $(document).ready(function () {
+        var hid = $("#hidImmagineProfilo")
+        var input = $("#fileImmagine")
+        var immagine = $("#immagineProfilo")
+        var divImmagine = $("#divImmagineProfilo")
+        if (hid.length && hid.val().length) {
+            divImmagine.show()
+            immagine.attr("src", "data:image/png;base64," + hid.val())
+            input.hide()
+        }
+        else {
+            input.show()
+            divImmagine.hide()
+        }
+    });
+
+    $("#rimuoviImmagineProfilo").click(function () {
+        $("#fileImmagine").val(null);
+        $("#hidImmagineProfilo").val(null);
+        $("#fileImmagine").show()
+        $("#divImmagineProfilo").hide()
+    });
+</script>

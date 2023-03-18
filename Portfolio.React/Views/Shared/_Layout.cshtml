@@ -1,0 +1,246 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+
+    <!-- FontAwesome -->
+    <link href="~/Assets/js/vendor/fontawesome-free-6.2.1-web/css/all.min.css" rel="stylesheet" />
+
+    <!-- Bootstrap 5.2 -->
+    <link href="~/Assets/js/vendor/bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link href="~/Assets/css/Main.css" rel="stylesheet" />
+    <script src="~/Assets/js/vendor/jquery-3.6.3.min.js"></script>
+    <script src="~/Assets/js/vendor/bootstrap-5.3.0-alpha1-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Assets/js/vendor/autosize/js/autosize.min.js"></script>
+    <style>
+        .personal-image {
+            max-height: 200px;
+            float: left;
+        }
+
+        .progress-label {
+            text-align: left;
+            padding-left: 30px;
+        }
+
+        .card {
+            margin-bottom: 30px;
+        }
+
+        .card-hover {
+            color: black;
+            text-decoration: none;
+            z-index: 10;
+        }
+
+            .card-hover:hover {
+                color: black;
+                -webkit-box-shadow: 0px 0px 15px 5px rgba(0,0,0,0.32);
+                box-shadow: 0px 0px 15px 5px rgba(0,0,0,0.32);
+                transform: scale(1.1);
+                transition: transform .2s;
+            }
+
+        .social-pill {
+            cursor: pointer;
+            color: white;
+            text-decoration: none;
+            background-color: #0d6efd;
+            font-size: 0.95em;
+        }
+
+            .social-pill:hover {
+                color: #fff;
+                background-color: #0b5ed7;
+            }
+
+        .accordion-button {
+            /* create a grid */
+            display: grid;
+            /* create colums. 1fr means use available space */
+            grid-template-columns: 1fr max-content max-content;
+            align-items: center;
+            grid-gap: 10px;
+            padding-left: 30px;
+        }
+
+            .accordion-button:after {
+                position: absolute;
+                margin-left: 5px;
+            }
+
+        /* On screens that are 600px or less, set the background color to olive */
+        @@media screen and (max-width: 768px) {
+            .accordion-pills {
+                display: grid;
+            }
+
+                .accordion-pills > .badge {
+                    margin-bottom: 2px;
+                }
+
+            .div-personal-image {
+                text-align: center;
+            }
+
+            .personal-image {
+                float: none;
+            }
+        }
+
+        #btn-back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+            z-index: 10;
+        }
+
+        .footer-element-dx p {
+            float: right;
+        }
+
+        .messagealert {
+            position: fixed;
+            top: 60px;
+            right: 20px;
+            z-index: 100000;
+            padding: 0;
+            font-size: 15px;
+        }
+
+        @@media only screen and (max-width: 768px) {
+            .footer-element-sx p, .footer-element-dx p {
+                text-align: center;
+                float: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav id="nav-menu-top" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Daris Cappelletti</a>
+            <button class="navbar-toggler collapsed"
+                    type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarColor01"
+                    aria-controls="navbarColor01"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse" id="navbarColor01" style="">
+                <ul class="nav navbar-nav me-auto mb-2 mb-lg-0" id="ulProgetti" runat="server">
+                    <li class="nav-item">
+                        <a href="~/Home" class="nav-link">
+                            HomePage
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="~/OldForms/Gff3-reader/Reader.aspx">
+                            Gff3-Reader
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="~/OldForms/RicercaTreni/Ricerca.aspx">
+                            Ricerca Treni
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="~/CurriculumGenerator">
+                            Generatore curriculum
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://github.com/DarisCappelletti/GestioneComande">
+                            Gestione comande
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://github.com/DarisCappelletti/comuni-italiani-json">
+                            Comuni italiani json
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="~/MappaComuniItaliani">
+                            Mappa comuni italiani
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container body-content">
+        <div class="messagealert" id="alert_container"></div>
+        @RenderBody()
+        <hr />
+        <footer>
+            <button type="button"
+                    class="btn btn-danger btn-floating btn-lg"
+                    id="btn-back-to-top">
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            <div class="row">
+                <div class="footer-element-sx col-md-6">
+                    <p>&copy; @DateTime.Now.Year - Daris Cappelletti</p>
+                </div>
+
+                <div class="footer-element-dx col-md-6">
+                    <p>
+                        Sito sviluppato in C# MVC
+                        <a href="https://github.com/DarisCappelletti/Portfolio" class="badge social-pill">
+                            <i class="fa-brands fa-github-square"></i>
+                        </a>
+                    </p>
+
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Go on top -->
+    <script>
+        //Get the button
+        let mybutton = document.getElementById("btn-back-to-top");
+
+        // When the user scrolls down 20px from the top of the document, show the button
+        window.onscroll = function () {
+            scrollFunction();
+        };
+
+        function scrollFunction() {
+            if (
+                document.body.scrollTop > 20 ||
+                document.documentElement.scrollTop > 20
+            ) {
+                mybutton.style.display = "block";
+            } else {
+                mybutton.style.display = "none";
+            }
+        }
+        // When the user clicks on the button, scroll to the top of the document
+        mybutton.addEventListener("click", backToTop);
+
+        function backToTop() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+    </script>
+
+    <script>
+        // Abilito popper ovunque
+        $(function () {
+            $("[data-bs-toggle='tooltip']").tooltip();
+        });
+    </script>
+
+
+    @*<script type="text/javascript" src="~/Assets/vendor/autosize/js/autosize.min.js"></script>*@
+    @RenderSection("scripts", required: false)
+</body>
+</html>

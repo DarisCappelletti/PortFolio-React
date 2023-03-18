@@ -3,3 +3,4 @@
 ################################################################################
 
 /Portfolio.API/secret.db.config
+/Portfolio.API/secrets.appsettings.config
