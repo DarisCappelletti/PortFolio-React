@@ -4,3 +4,8 @@
 
 /Portfolio.API/secret.db.config
 /Portfolio.API/secrets.appsettings.config
+/Portfolio.Core.BLL/obj
+/Portfolio.Core.DAL/bin/Debug/net5.0
+/Portfolio.Core.DAL/obj/Debug/net5.0
+/Portfolio.Core.BLL/bin/Debug/net5.0
+/Portfolio.Core.DAL/obj
