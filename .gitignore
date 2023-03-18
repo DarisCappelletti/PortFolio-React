@@ -9,3 +9,5 @@
 /Portfolio.Core.DAL/obj/Debug/net5.0
 /Portfolio.Core.BLL/bin/Debug/net5.0
 /Portfolio.Core.DAL/obj
+/.vs/PortFolio
+/Portfolio.API/bin
