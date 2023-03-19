@@ -11,3 +11,6 @@
 /Portfolio.Core.DAL/obj
 /.vs/PortFolio
 /Portfolio.API/bin
+/Portfolio.API/obj
+/Portfolio.Core.BLL/bin/Release/net5.0
+/Portfolio.Core.DAL/bin/Release/net5.0

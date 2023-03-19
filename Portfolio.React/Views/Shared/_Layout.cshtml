@@ -16,7 +16,18 @@
     <script src="~/Assets/js/vendor/jquery-3.6.3.min.js"></script>
     <script src="~/Assets/js/vendor/bootstrap-5.3.0-alpha1-dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/Assets/js/vendor/autosize/js/autosize.min.js"></script>
+
+    <link href="~/Assets/vendors/leaflet-1.8.0/leaflet.css" rel="stylesheet" />
+    <link href="~/Assets/vendors/Leaflet.markercluster-1.5.3/dist/MarkerCluster.css" rel="stylesheet" />
+    <link href="~/Assets/vendors/Leaflet.markercluster-1.5.3/dist/MarkerCluster.Default.css" rel="stylesheet" />
+    <script src="~/Assets/vendors/leaflet-1.8.0/leaflet.js"></script>
+    <script src="~/Assets/vendors/Leaflet.markercluster-1.5.3/dist/leaflet.markercluster.js"></script>
+
     <style>
+        #map {
+            height: 480px;
+        }
+
         .personal-image {
             max-height: 200px;
             float: left;
@@ -138,36 +149,6 @@
                     <li class="nav-item">
                         <a href="~/Home" class="nav-link">
                             HomePage
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="~/OldForms/Gff3-reader/Reader.aspx">
-                            Gff3-Reader
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="~/OldForms/RicercaTreni/Ricerca.aspx">
-                            Ricerca Treni
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="~/CurriculumGenerator">
-                            Generatore curriculum
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="https://github.com/DarisCappelletti/GestioneComande">
-                            Gestione comande
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="https://github.com/DarisCappelletti/comuni-italiani-json">
-                            Comuni italiani json
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="~/MappaComuniItaliani">
-                            Mappa comuni italiani
                         </a>
                     </li>
                 </ul>

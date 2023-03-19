@@ -45,6 +45,8 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\public\files\" />
+    <Folder Include="ClientApp\src\assets\files\" />
+    <Folder Include="ClientApp\src\assets\images\card-anteprima\" />
     <Folder Include="ClientApp\src\files\" />
   </ItemGroup>
 
@@ -82,6 +84,36 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Assets\js\vendor\jquery-3.6.3.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\vendors\leaflet-1.8.0\images\layers-2x.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\vendors\leaflet-1.8.0\images\layers.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\vendors\leaflet-1.8.0\images\marker-icon-2x.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\vendors\leaflet-1.8.0\images\marker-icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\vendors\leaflet-1.8.0\images\marker-shadow.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\vendors\leaflet-1.8.0\leaflet.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\vendors\leaflet-1.8.0\leaflet.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\vendors\Leaflet.markercluster-1.5.3\dist\leaflet.markercluster.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\vendors\Leaflet.markercluster-1.5.3\dist\MarkerCluster.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\vendors\Leaflet.markercluster-1.5.3\dist\MarkerCluster.Default.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
